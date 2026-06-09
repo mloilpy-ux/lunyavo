@@ -97,24 +97,31 @@ class OverlayService : Service() {
         windowManager.addView(container, params)
     }
 
-    private fun processVideo(url: String, button: Button) {
-        button.text = "Скачивание аудио..."
-        button.isEnabled = false
-        scope.launch {
-            val file = downloader.downloadAudio(url)
-            if (file != null) {
-                button.text = "Gemini ИИ думает..."
-                val resultText = translator.processAudio(file)
-                button.text = "Озвучка..."
-                tts.applySettings(currentSpeed, 1.0f)
-                tts.speak(resultText)
-                button.text = "Готово!"
-            } else {
-                button.text = "Ошибка загрузки"
-            }
-            button.isEnabled = true
+private fun processVideo(url: String, button: Button) {
+    AppLogger.info("Начата обработка ссылки: $url")
+    button.text = "Скачивание аудио..."
+    button.isEnabled = false
+    
+    scope.launch {
+        val file = downloader.downloadAudio(url)
+        if (file != null) {
+            AppLogger.debug("Аудио успешно скачано, размер: ${file.length()} байт")
+            button.text = "Gemini ИИ думает..."
+            
+            val resultText = translator.processAudio(file)
+            AppLogger.debug("Получен ответ от Gemini: ${resultText.take(50)}...") // Логируем первые 50 символов
+            
+            button.text = "Озвучка..."
+            tts.applySettings(currentSpeed, 1.0f)
+            tts.speak(resultText)
+            button.text = "Готово!"
+        } else {
+            AppLogger.error("Не удалось скачать аудио по ссылке: $url")
+            button.text = "Ошибка загрузки"
         }
+        button.isEnabled = true
     }
+}
 
     override fun onDestroy() {
         super.onDestroy()
