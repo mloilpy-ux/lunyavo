@@ -22,7 +22,8 @@ class GeminiTranslator(apiKey: String) {
             )
             response.text ?: "Ошибка: пустой ответ от ИИ"
         } catch (e: Exception) {
-            "Ошибка перевода: ${e.localizedMessage}"
-        }
+    AppLogger.error("Сбой при запросе к Gemini API", e)
+    "Ошибка перевода: ${e.localizedMessage}"
+}
     }
 }
