@@ -33,7 +33,7 @@ class OverlayService : Service() {
         super.onCreate()
         windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
         downloader = VideoDownloader(this)
-        translator = GeminiTranslator("СЮДА_ВСТАВЬ_СВОЙ_API_KEY") 
+        translator = GeminiTranslator("AQ.Ab8RN6LCcW8mp0DMHPJzLN1czBsDLw9GYjVV3KCLi1tg4xYspw") 
         tts = SmartTTS(this) {}
         buildOverlayLayout()
     }
