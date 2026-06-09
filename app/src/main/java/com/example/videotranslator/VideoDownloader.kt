@@ -27,8 +27,8 @@ class VideoDownloader(private val context: Context) {
             YoutubeDL.getInstance().execute(request, null)
             File(downloadDir, "audio.mp3").takeIf { it.exists() }
         } catch (e: Exception) {
-            e.printStackTrace()
-            null
-        }
+    AppLogger.error("Критическая ошибка yt-dlp при скачивании", e)
+    null
+    }
     }
 }
