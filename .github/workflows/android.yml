@@ -1,0 +1,35 @@
+name: Pure Cloud Android Build
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    # Настраиваем автономный Gradle, так как у нас нет локального скрипта gradlew
+    - name: Setup Gradle Wrapper
+      uses: gradle/actions/setup-gradle@v3
+      with:
+        gradle-version: 8.5
+
+    # Запускаем компиляцию глобальным установленным градлом
+    - name: Build Debug APK
+      run: gradle assembleDebug
+
+    - name: Upload Finished APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: VoiceOverApp-Cloud-Build
+        path: app/build/outputs/apk/debug/app-debug.apk
