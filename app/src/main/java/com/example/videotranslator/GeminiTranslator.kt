@@ -24,6 +24,6 @@ class GeminiTranslator(apiKey: String) {
         } catch (e: Exception) {
     AppLogger.error("Сбой при запросе к Gemini API", e)
     "Ошибка перевода: ${e.localizedMessage}"
-}
     }
-}
+          }
+    }
